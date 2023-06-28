@@ -1,6 +1,119 @@
-use std::io;  // prelude
+use std::{io::{self, ErrorKind}, collections::HashMap, fs::File, error::Error};  // prelude
 use rand::Rng; // trait
 use std::cmp::Ordering;
+
+fn chapter10() {
+    pub trait Summary {
+        fn summarize(&self) -> String;
+    }
+    
+    pub struct NewsArticle {
+        pub headline: String,
+        pub author: String,
+    }
+    
+    impl Summary for NewsArticle {
+        fn summarize(&self) -> String {
+            format!("{}, by {}", self.headline, self.author)
+        }
+    }
+
+    let summary = NewsArticle {
+        headline: "xxx".to_string(),
+        author: "a1".to_string(),
+    };
+    println!("{}", summary.summarize());
+}
+
+
+fn main() {
+    chapter10();
+    // chapter9();
+    // chapter8();
+    chapter7();
+    // chapter6();
+    // chapter5();
+    // chapter4();
+    // chapter3();
+    // chapter2();
+}
+
+fn chapter9() -> Result<(), Box<dyn Error>> {
+    // result
+    // let f = File::open("1.txt");
+    // let f = match f {
+    //     Ok(f) => f,
+    //     Err(e) => match e.kind() {
+    //         ErrorKind::NotFound => match File::create("1.txt") {
+    //             Ok(f) => f,
+    //             Err(e) => panic!("Error creating file: {:?}", e),
+    //         },
+    //         e => panic!("Error opening the file: {:?}", e),
+    //     },
+    // };
+
+    // let f = File::open("1.txt").unwrap();
+    let f = File::open("1.txt").expect("没找到文件");
+    let f = File::open("1.txt")?;
+    Ok(())
+}
+
+fn chapter8() {
+    // vextor
+    println!("Vector::");
+    let mut v = Vec::new();
+    v.push(1);
+    v.push(2);
+    for x in &mut v {
+        *x += 1;
+    }
+    println!("{:?}", v);
+
+    #[derive(Debug)]
+    enum SheetCell {
+        Int(i32),
+        Text(String),
+    }
+    let row = vec![
+        SheetCell::Int(3),
+        SheetCell::Text(String::from("blue")),
+    ];
+    println!("{:?}", row);
+
+    // string
+    println!("String::");
+    let s1 = "hello".to_string();
+    let s2 = String::from("worild");
+    let s = s1 + &s2;
+    // println!("{}", s1);
+    println!("{} {}", s2, s);
+    let s = format!("{} {}", s, s2);
+    println!("{}", s);
+
+    // HashMap
+    println!("HashMap::");
+    let mut scores: HashMap<String, i32> = HashMap::new();
+    scores.insert("key".to_string(), 1);
+    let teams = vec!["Blue".to_string(), "yellow".to_string()];
+    let init_scores = vec![10, 50];
+    let scores: HashMap<_, _> = teams.iter().zip(init_scores.iter()).collect();
+    println!("{:?}", scores);
+
+    let team_name = "Blue".to_string();
+    match scores.get(&team_name) {
+        Some(s) => println!("{}", s),
+        None => println!("team not exist"),
+    }
+
+    for (k, v) in &scores {
+        println!("{}: {}", k, v);
+    }
+}
+
+fn chapter7() {
+    
+    // hosting.boo();
+}
 
 fn chapter6() {
     // enum
@@ -49,14 +162,6 @@ fn chapter6() {
     } else {
         println!("others");
     }
-}
-
-fn main() {
-    chapter6();
-    // chapter5();
-    // chapter4();
-    // chapter3();
-    // chapter2();
 }
 
 fn chapter5() {
